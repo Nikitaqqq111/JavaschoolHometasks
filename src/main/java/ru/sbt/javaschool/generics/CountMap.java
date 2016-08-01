@@ -6,26 +6,20 @@ import java.util.Map;
  * Created by Никита on 31.07.2016.
  */
 
-public interface CountMap<K extends Comparable<K>>{
-        // добавляет элемент в этот контейнер.
-        void add(K o);
+public interface CountMap<K extends Comparable<K>> {
 
-        //Возвращает количество добавлений данного элемента
-        int getCount(K o);
+    void add(K o);
 
-        //Удаляет элемент и контейнера и возвращает количество его добавлений(до удаления)
-        int remove(K o);
+    int getCount(K o);
 
-        //количество разных элементов
-        int size();
+    int remove(K o);
 
-        //Добавить все элементы из source в текущий контейнер, при совпадении ключей, суммировать значения
-        void addAll(CountMap<K> sourceCountMap);
+    int size();
 
-        //Вернуть java.util.Map. ключ - добавленный элемент, значение - количество его добавлений
-        Map<K, Integer> toMap();
+    void addAll(CountMap<K> sourceCountMap);
 
-        //Тот же самый контракт как и toMap(), только всю информацию записать в destination
-        void toMap(Map<K, Integer> destination);
-        }
+    Map<K, Integer> toMap();
+
+    void toMap(Map<K, Integer> destination);
+}
 
