@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * Created by Никита on 31.07.2016.
  */
-public class CountMapImpl<K extends Comparable<K>> implements CountMap<K> {
+public class CountMapImpl<K> implements CountMap<K> {
 
     private final HashMap<K, Integer> countMap = new HashMap<>();
 
@@ -64,8 +64,8 @@ public class CountMapImpl<K extends Comparable<K>> implements CountMap<K> {
     /**
      * Добавить все элементы из source в текущий контейнер, при совпадении ключей суммировать значения
      */
-    public void addAll(CountMap<K> sourceCountMap) {
-        Map<K, Integer> sourceMap = sourceCountMap.toMap();
+    public void addAll(CountMap<? extends K> sourceCountMap) {
+        Map<? extends K, Integer> sourceMap = sourceCountMap.toMap();
         for (K keyOfSourceMap : sourceMap.keySet()) {
             if (countMap.containsKey(keyOfSourceMap)) {
                 countMap.put(keyOfSourceMap, countMap.get(keyOfSourceMap) + sourceMap.get(keyOfSourceMap));
@@ -87,7 +87,7 @@ public class CountMapImpl<K extends Comparable<K>> implements CountMap<K> {
     /**
      * Тот же самый контракт как и toMap(), только всю информацию записать в destination
      */
-    public void toMap(Map<K, Integer> destinationMap) {
+    public void toMap(Map<? super K, Integer> destinationMap) {
         destinationMap.clear();
         destinationMap.putAll(countMap);
     }

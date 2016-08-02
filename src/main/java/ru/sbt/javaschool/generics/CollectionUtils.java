@@ -17,7 +17,7 @@ public class CollectionUtils {
         return new ArrayList<>();
     }
 
-    public static <E> int indexOf(List<E> source, E o) {
+    public static <E> int indexOf(List<? extends E> source, E o) {
         return source.indexOf(o);
     }
 
@@ -25,20 +25,20 @@ public class CollectionUtils {
         return source.subList(0, size);
     }
 
-    public static <E> void add(List<E> source, E o) {
-        source.add(o);
+    public static <E> void add(List<? super E> destination, E o) {
+        destination.add(o);
     }
 
-    public static <E> void removeAll(List<E> removeFrom, List<?> c2) {
+    public static <E> void removeAll(List<? extends E> removeFrom, List<? extends E> c2) {
         removeFrom.removeAll(c2);
     }
 
-    public static <E> boolean containsAll(List<E> c1, List<?> c2) {
+    public static <E> boolean containsAll(List<? extends E> c1, List<? extends E> c2) {
         return c1.containsAll(c2);
     }
 
-    public static <E> boolean containsAny(List<E> c1, List<?> c2) {
-        Iterator iterator = c2.iterator();
+    public static <E> boolean containsAny(List<? extends E> c1, List<? extends E> c2) {
+        Iterator<? extends E> iterator = c2.iterator();
         while (iterator.hasNext()) {
             if (c1.contains(iterator.next())) {
                 return true;
@@ -47,7 +47,7 @@ public class CollectionUtils {
         return false;
     }
 
-    public static <E extends Comparable<? super E>> List<E> range(List<E> list, E min, E max) {
+    public static <E extends Comparable<? super E>> List<E> range(List<? extends E> list, E min, E max) {
         List<E> rangeList = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).compareTo(min) >= 0 && list.get(i).compareTo(max) <= 0) {
@@ -57,7 +57,7 @@ public class CollectionUtils {
         return rangeList;
     }
 
-    public static <E> List range(List<E> list, E min, E max, Comparator<? super E> comparator) {
+    public static <E> List<E> range(List<? extends E> list, E min, E max, Comparator<? super E> comparator) {
         List<E> rangeList = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
             if (comparator.compare(list.get(i), min) >= 0 && comparator.compare(list.get(i), max) <= 0) {
