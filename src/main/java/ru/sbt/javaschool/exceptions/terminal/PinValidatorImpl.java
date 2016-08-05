@@ -23,6 +23,7 @@ public class PinValidatorImpl implements PinValidator {
         this.clientsAndPasswords = clientsAndPasswords;
         this.timeBlocking = new Date(0);
         this.countOfAttempts = 0;
+
     }
 
     @Override
