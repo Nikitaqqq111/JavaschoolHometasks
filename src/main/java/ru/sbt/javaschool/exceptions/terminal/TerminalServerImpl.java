@@ -14,7 +14,7 @@ public class TerminalServerImpl implements TerminalServer {
         this.accountBalanceOfClients = accountBalanceOfClients;
     }
 
-    void chechAllRules(String client) throws TerminalServerException {
+    private void chechAllRules(String client) throws TerminalServerException {
         Random random = new Random();
         if (random.nextInt(10) < 3) {
             throw new BadConnectionException("Ошибка подключения к серверу. Обратитесь в техническую поддержку банка");
