@@ -29,12 +29,12 @@ public class BeanUtils {
         List<Method> listOfMethodsFrom = Arrays.asList(from.getClass().getMethods());
         List<Method> listOfMethodsTo = Arrays.asList(to.getClass().getMethods());
         for (Method methodFrom : listOfMethodsFrom) {
-            for (Method methodTo : listOfMethodsFrom) {
+            for (Method methodTo : listOfMethodsTo) {
                 if (checkGetterAndSetter(methodFrom, methodTo)) {
                     try {
                         methodTo.invoke(to, methodFrom.invoke(from));
                     } catch (IllegalAccessException | InvocationTargetException e) {
-                        e.printStackTrace();
+                        System.err.println("IllegalAccessException | InvocationTargetException");
                     }
                 }
             }

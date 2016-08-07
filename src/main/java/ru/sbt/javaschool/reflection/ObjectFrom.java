@@ -1,18 +1,21 @@
 package ru.sbt.javaschool.reflection;
 
+import ru.sbt.javaschool.relationship.Person;
+
 /**
  * Created by Никита on 07.08.2016.
  */
-public class ObjectTo {
+public class ObjectFrom {
     private String name;
-    private Number number;
+    private Integer number;
     private boolean trueOrFalse;
-    private int person = 0;
+    private Person person;
 
-    public ObjectTo(String name, Number number, boolean trueOrFalse) {
+    public ObjectFrom(String name, Integer number, boolean trueOrFalse, Person person) {
         this.name = name;
         this.number = number;
         this.trueOrFalse = trueOrFalse;
+        this.person = person;
     }
 
     public String getName() {
@@ -23,11 +26,11 @@ public class ObjectTo {
         this.name = name;
     }
 
-    public Number getNumber() {
+    public Integer getNumber() {
         return number;
     }
 
-    public void setNumber(Number number) {
+    public void setNumber(Integer number) {
         this.number = number;
     }
 
@@ -37,5 +40,13 @@ public class ObjectTo {
 
     public void setTrueOrFalse(boolean trueOrFalse) {
         this.trueOrFalse = trueOrFalse;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
     }
 }
