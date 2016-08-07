@@ -34,7 +34,7 @@ public class BeanUtils {
                     try {
                         methodTo.invoke(to, methodFrom.invoke(from));
                     } catch (IllegalAccessException | InvocationTargetException e) {
-                        System.err.println("IllegalAccessException | InvocationTargetException");
+                        System.err.println("IllegalAccessException or InvocationTargetException");
                     }
                 }
             }
