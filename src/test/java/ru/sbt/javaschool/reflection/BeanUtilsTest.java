@@ -1,6 +1,9 @@
 package ru.sbt.javaschool.reflection;
 
 import org.junit.Test;
+import ru.sbt.javaschool.reflection.domain.ObjectFrom;
+import ru.sbt.javaschool.reflection.domain.ObjectTo;
+import ru.sbt.javaschool.reflection.domain.SubObjectTo;
 import ru.sbt.javaschool.relationship.Person;
 
 import java.util.Date;
@@ -20,8 +23,8 @@ public class BeanUtilsTest {
         BeanUtils.assign(subObjectTo, objectFrom);
         assertEquals(objectFrom.getName(), objectTo.getName());
         assertEquals(objectFrom.getNumber(), objectTo.getNumber());
-        assertEquals(objectFrom.getName(), subObjectTo.getName());
-        assertEquals(objectFrom.getName(), ((ObjectTo)subObjectTo).getName());
+        assertNotEquals(objectFrom.getName(), subObjectTo.getName());
+        assertNotEquals(objectFrom.getName(), ((ObjectTo)subObjectTo).getName());
         BeanUtils.assign(new Integer(0), new Date());
     }
 }

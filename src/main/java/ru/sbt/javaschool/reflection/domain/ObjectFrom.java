@@ -1,4 +1,4 @@
-package ru.sbt.javaschool.reflection;
+package ru.sbt.javaschool.reflection.domain;
 
 import ru.sbt.javaschool.relationship.Person;
 

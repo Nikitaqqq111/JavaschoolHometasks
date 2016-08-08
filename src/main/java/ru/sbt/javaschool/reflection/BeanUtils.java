@@ -2,8 +2,8 @@ package ru.sbt.javaschool.reflection;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Никита on 07.08.2016.
@@ -25,30 +25,12 @@ public class BeanUtils {
      * @param to   Object which properties will be set.
      * @param from Object which properties will be used to get values.
      */
-    public static void assign(Object to, Object from) {
-        List<Method> listOfMethodsFrom = Arrays.asList(from.getClass().getMethods());
-        List<Method> listOfMethodsTo = Arrays.asList(to.getClass().getMethods());
-        for (Method methodFrom : listOfMethodsFrom) {
-            for (Method methodTo : listOfMethodsTo) {
-                if (checkGetterAndSetter(methodFrom, methodTo)) {
-                    try {
-                        methodTo.invoke(to, methodFrom.invoke(from));
-                    } catch (IllegalAccessException | InvocationTargetException e) {
-                        System.err.println("IllegalAccessException or InvocationTargetException");
-                    }
-                }
-            }
-        }
+    private static boolean isGetter(Method method) {
+        return method.getName().startsWith("get") && method.getParameterCount() == 0 && !void.class.equals(method.getReturnType());
     }
 
-    public static boolean checkGetterAndSetter(Method methodFrom, Method methodTo) {
-        if (methodFrom.getName().startsWith("get") && methodTo.getName().startsWith("set") &&
-                methodFrom.getName().substring(3).equals(methodTo.getName().substring(3)) &&
-                methodFrom.getParameterCount() == 0 && methodTo.getParameterCount() == 1 &&
-                methodTo.getReturnType() == void.class && isSubClass(methodTo.getParameterTypes()[0], methodFrom.getReturnType())) {
-            return true;
-        }
-        return false;
+    private static boolean isSetter(Method method) {
+        return method.getName().startsWith("set") && method.getParameterCount() == 1;
     }
 
     public static boolean isSubClass(Class<?> parent, Class<?> child) {
@@ -61,4 +43,42 @@ public class BeanUtils {
         return false;
     }
 
+    public static void assign(Object to, Object from) {
+        Map<String, Method> getters = new HashMap<>(), setters = new HashMap<>();
+        for (Method method : from.getClass().getMethods()) {
+            if (isGetter(method)) {
+                if (!getters.containsKey(method.getName().substring(3))) {
+                    getters.put(method.getName().substring(3), method);
+                } else {
+                    try {
+                        throw new TooManyGettersWithDuplicatesNamesException();
+                    } catch (TooManyGettersWithDuplicatesNamesException ex) {
+                        System.err.println("Warning: Too many getters with duplicates names. The function assign may have a problem!");
+                    }
+                }
+            }
+        }
+        for (Method method : to.getClass().getMethods()) {
+            if (isSetter(method)) {
+                if (!setters.containsKey(method.getName().substring(3))) {
+                    setters.put(method.getName().substring(3), method);
+                } else {
+                    try {
+                        throw new TooManySettersWithDuplicatesNamesException();
+                    } catch (TooManySettersWithDuplicatesNamesException ex) {
+                        System.err.println("Warning: Too many setters with duplicates names. The function assign may have a problem!");
+                    }
+                }
+            }
+        }
+        for (String nameOfField : getters.keySet()) {
+            if (setters.containsKey(nameOfField) && isSubClass(setters.get(nameOfField).getParameterTypes()[0], getters.get(nameOfField).getReturnType())) {
+                try {
+                    setters.get(nameOfField).invoke(to, getters.get(nameOfField).invoke(from));
+                } catch (IllegalAccessException | InvocationTargetException ex) {
+                    System.err.println("IllegalAccessException or InvocationTargetException");
+                }
+            }
+        }
+    }
 }

@@ -1,4 +1,4 @@
-package ru.sbt.javaschool.reflection;
+package ru.sbt.javaschool.reflection.domain;
 
 /**
  * Created by Никита on 07.08.2016.
