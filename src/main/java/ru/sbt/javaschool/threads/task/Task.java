@@ -1,29 +1,47 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package ru.sbt.javaschool.threads.task;
 
 import java.util.concurrent.Callable;
 
 /**
- * Created by Никита on 31.08.2016.
+ *
+ * @author evstafiev
  */
 public class Task<T> {
     private final Callable<? extends T> callable;
     private volatile TaskException taskException;
+    private volatile boolean isFinished;
     private volatile T result;
-
+    private final Object lock = new Object();
+    
+    
     public Task(Callable<? extends T> callable) {
         this.callable = callable;
     }
-
-    public T get() {
+    
+    private void checkException() {
         if (taskException != null) throw taskException;
-        if (result != null) return result;
-        synchronized (this) {
+    }
+    
+    public T get() {
+        checkException();
+        if (isFinished) return result;
+        synchronized (lock) {
+            checkException();
+            if (isFinished) return result;
             try {
-                return result = callable.call();
-            } catch (Exception e) {
-                taskException = new TaskException(e);
+                result = callable.call();
+                isFinished = true;
+                return result;
+            } catch (Exception ex) {
+                taskException = new TaskException(ex);
                 throw taskException;
             }
         }
     }
+    
 }

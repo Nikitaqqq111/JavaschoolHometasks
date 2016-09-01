@@ -11,7 +11,7 @@ public class TaskTest {
     @Test
     public void get() throws Exception {
         Task<Integer> task = new Task<>(() -> {
-            for (int i = 0; i < 1_000_000_000; i++);
+            Thread.currentThread().sleep(3000);
             return 123;
         });
 
@@ -21,5 +21,7 @@ public class TaskTest {
         for (int i = 0; i < 5; i++) {
             new Thread(run).start();
         }
+
+        Thread.currentThread().sleep(10000);
     }
 }
