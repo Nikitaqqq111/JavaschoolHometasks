@@ -41,10 +41,6 @@ public class Main {
                 throw new RuntimeException(e);
             }
         };
-        Runnable task5 = () -> {
-            System.out.println("Task5 started");
-            throw new RuntimeException();
-        };
 
         /*ThreadPool threadPool = new FixedThreadPool(2);
         threadPool.start();
