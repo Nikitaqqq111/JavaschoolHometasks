@@ -19,6 +19,7 @@ public class EncryptedClassLoader extends ClassLoader {
         super(parent);
         this.key = key;
         this.dir = dir;
+
     }
 
     @Override
