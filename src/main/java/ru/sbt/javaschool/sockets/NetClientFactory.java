@@ -1,6 +1,6 @@
 package ru.sbt.javaschool.sockets;
 
-import ru.sbt.javaschool.sockets.domain.Calculator;
+import ru.sbt.javaschool.sockets.domain.Concatination;
 
 import static java.lang.ClassLoader.getSystemClassLoader;
 import static java.lang.reflect.Proxy.newProxyInstance;
@@ -23,8 +23,12 @@ public class NetClientFactory {
 
     public static void main(String[] args) {
         NetClientFactory factory = new NetClientFactory("localhost", 5000);
-        Calculator client = factory.createClient(Calculator.class);
-        double calculate = client.calculate(1, 2);
-        System.out.println(calculate);
+        for (int i = 0; i < 10; i++) {
+            new Thread(() -> {
+                Concatination client = factory.createClient(Concatination.class);
+                String concateResult = client.concate(Thread.currentThread().getName(), " ");
+                System.out.println(concateResult);
+            }).start();
+        }
     }
 }
